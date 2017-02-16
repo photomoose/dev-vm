@@ -81,18 +81,43 @@ choco install fiddler4 -y
 choco install webpi -y
 choco install winscp -y
 
+nvm install latest
+
 # Create AppModelUnlock if it doesn't exist, required for enabling Developer Mode
 $RegistryKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
 if (-not(Test-Path -Path $RegistryKeyPath)) {
     New-Item -Path $RegistryKeyPath -ItemType Directory -Force
 }
 
-# Add registry value to enable Developer Mode
+# Enable Developer Mode
 New-ItemProperty -Path $RegistryKeyPath -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1
 
+# Enable Bash for Windows
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 
 # Show file extensions
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name HideFileExt -Value 0
 
-nvm install latest
+# Disable SmartScreen Filter
+Write-Host "Disabling SmartScreen Filter..."
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "SmartScreenEnabled" -Type String -Value "Off"
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AppHost" -Name "EnableWebContentEvaluation" -Type DWord -Value 0
+
+# Disable Start Menu suggestions
+Write-Host "Disabling Start Menu suggestions..."
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
+
+# Disable Advertising ID
+Write-Host "Disabling Advertising ID..."
+If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo")) {
+    New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | Out-Null
+}
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
+
+# Uninstall bloatware
+Get-AppxPackage "king.com.CandyCrushSodaSaga" | Remove-AppxPackage
+Get-AppxPackage "Microsoft.XboxApp" | Remove-AppxPackage
+Get-AppxPackage "Microsoft.MinecraftUWP" | Remove-AppxPackage
+Get-AppxPackage "flaregamesGmbH.RoyalRevolt2" | Remove-AppxPackage
+Get-AppxPackage "0D16BB98.Houzz" | Remove-AppxPackage
+Get-AppxPackage "Facebook.Facebook" | Remove-AppxPackage
