@@ -80,6 +80,7 @@ choco install p4merge -y
 choco install fiddler4 -y
 choco install webpi -y
 choco install winscp -y
+choco install agentransack -y
 
 nvm install latest
 
@@ -121,3 +122,7 @@ Get-AppxPackage "Microsoft.MinecraftUWP" | Remove-AppxPackage
 Get-AppxPackage "flaregamesGmbH.RoyalRevolt2" | Remove-AppxPackage
 Get-AppxPackage "0D16BB98.Houzz" | Remove-AppxPackage
 Get-AppxPackage "Facebook.Facebook" | Remove-AppxPackage
+Get-AppxPackage "Microsoft.MicrosoftSolitaireCollection" | Remove-AppxPackage
+Get-AppxPackage "Microsoft.3DBuilder" | Remove-AppxPackage
+Get-AppxPackage "9E2F88E3.Twitter" | Remove-AppxPackage
+Get-AppxPackage "Microsoft.MicrosoftOfficeHub" | Remove-AppxPackage
