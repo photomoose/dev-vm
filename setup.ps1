@@ -81,6 +81,7 @@ choco install fiddler4 -y
 choco install webpi -y
 choco install winscp -y
 choco install agentransack -y
+choco install jre8 -y
 
 nvm install latest
 
